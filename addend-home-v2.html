@@ -1,0 +1,1386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Addend Analytics — Operational Analytics & Applied AI Consulting</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root {
+  --navy: #0c1a35;
+  --navy-mid: #162549;
+  --navy-light: #1f3461;
+  --gold: #FF5E00;
+  --gold-light: #FF7A1A;
+  --gold-pale: #FFF0E6;
+  --cream: #faf8f4;
+  --white: #ffffff;
+  --slate: #4a5568;
+  --slate-light: #718096;
+  --line: rgba(12,26,53,0.10);
+  --line-strong: rgba(12,26,53,0.18);
+  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-sans: 'IBM Plex Sans', sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+}
+
+html{scroll-behavior:smooth}
+body{font-family:var(--font-sans);background:var(--cream);color:var(--navy);font-size:16px;line-height:1.7;overflow-x:hidden}
+
+h1,h2,h3{font-family:var(--font-serif);letter-spacing:-0.3px}
+
+/* NAV */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 6vw;height:72px;
+  background:rgba(250,248,244,0.97);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--line);
+}
+.nav-left{display:flex;align-items:center;gap:48px}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+
+.nav-links{display:flex;gap:32px;list-style:none}
+.nav-links a{font-size:13px;font-weight:400;color:var(--slate);text-decoration:none;letter-spacing:0.3px;transition:color .2s}
+.nav-links a:hover{color:var(--navy)}
+.nav-right{display:flex;align-items:center;gap:20px}
+.nav-phone{font-size:12px;font-weight:500;color:var(--slate-light);font-family:var(--font-mono);letter-spacing:0.5px}
+.nav-cta{
+  background:var(--navy);color:var(--white);
+  padding:9px 24px;
+  font-size:13px;font-weight:500;text-decoration:none;
+  letter-spacing:0.5px;
+  border:1px solid var(--navy);
+  transition:background .2s,color .2s;
+}
+.nav-cta:hover{background:var(--gold);border-color:var(--gold);color:var(--white)}
+
+/* HERO CAROUSEL */
+.hero-carousel{
+  position:relative;
+  width:100%;
+  height:100vh;
+  min-height:600px;
+  overflow:hidden;
+  margin-top:72px;
+}
+.slide{
+  position:absolute;inset:0;
+  display:flex;align-items:center;
+  opacity:0;transition:opacity .9s ease;
+  pointer-events:none;
+}
+.slide.active{opacity:1;pointer-events:auto}
+.slide-bg{
+  position:absolute;inset:0;
+  background-size:cover;background-position:center;
+  filter:brightness(0.42);
+  transition:transform 8s ease;
+}
+.slide.active .slide-bg{transform:scale(1.04)}
+.slide-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(90deg, rgba(12,26,53,0.85) 40%, rgba(12,26,53,0.2) 100%);
+}
+.slide-content{
+  position:relative;z-index:2;
+  padding:0 6vw;
+  max-width:700px;
+}
+.slide-tag{
+  display:inline-block;
+  font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;
+  color:var(--gold-light);
+  border-bottom:1px solid var(--gold);
+  padding-bottom:3px;
+  margin-bottom:28px;
+}
+.slide-content h1{
+  font-family:var(--font-serif);
+  font-size:clamp(36px,5vw,64px);
+  font-weight:700;line-height:1.08;
+  color:var(--white);
+  margin-bottom:24px;
+}
+.slide-content .caption{
+  font-size:clamp(16px,2vw,20px);
+  font-weight:300;
+  color:rgba(255,255,255,0.75);
+  line-height:1.7;
+  max-width:520px;
+  margin-bottom:12px;
+}
+.slide-content .sub{
+  font-size:14px;
+  color:rgba(255,255,255,0.50);
+  line-height:1.75;
+  max-width:500px;
+  margin-bottom:36px;
+}
+.slide-divider{width:48px;height:2px;background:var(--gold);margin-bottom:36px}
+.btn-primary{
+  background:var(--navy);color:var(--white);
+  padding:13px 32px;
+  font-size:13px;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;
+  text-decoration:none;
+  border:1px solid rgba(255,255,255,0.3);
+  transition:background .2s,border-color .2s;
+  display:inline-flex;align-items:center;gap:10px;
+}
+.btn-primary:hover{background:var(--gold);border-color:var(--gold)}
+.btn-outline{
+  background:transparent;color:var(--white);
+  padding:13px 32px;
+  font-size:13px;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;
+  text-decoration:none;border:1px solid rgba(255,255,255,0.3);
+  transition:border-color .2s,color .2s;
+  display:inline-flex;align-items:center;gap:10px;
+}
+.btn-outline:hover{border-color:var(--white);color:var(--white)}
+.slide-actions{display:flex;gap:16px;flex-wrap:wrap}
+
+/* Carousel controls */
+.carousel-dots{
+  position:absolute;bottom:36px;left:6vw;z-index:10;
+  display:flex;gap:10px;align-items:center;
+}
+.dot{
+  width:28px;height:3px;background:rgba(255,255,255,0.25);
+  cursor:pointer;transition:background .3s,width .3s;
+  border:none;
+}
+.dot.active{background:var(--gold);width:44px}
+.carousel-arrows{
+  position:absolute;bottom:28px;right:6vw;z-index:10;
+  display:flex;gap:8px;
+}
+.carousel-arrow{
+  width:44px;height:44px;
+  border:1px solid rgba(255,255,255,0.2);
+  background:rgba(12,26,53,0.5);
+  color:rgba(255,255,255,0.7);
+  font-size:18px;
+  cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:background .2s,border-color .2s;
+  backdrop-filter:blur(4px);
+}
+.carousel-arrow:hover{background:var(--gold);border-color:var(--gold);color:var(--white)}
+
+/* SECTION COMMON */
+section{padding:100px 6vw}
+.section-header{margin-bottom:64px}
+.section-label{
+  font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;
+  color:var(--gold);margin-bottom:16px;display:flex;align-items:center;gap:12px;
+}
+.section-label::after{content:'';flex:0 0 32px;height:1px;background:var(--gold)}
+h2{font-size:clamp(28px,3.5vw,44px);font-weight:700;line-height:1.1;color:var(--navy)}
+h2 em{font-style:italic;color:var(--gold)}
+.lead{font-size:17px;font-weight:300;color:var(--slate);max-width:560px;margin-top:20px;line-height:1.8}
+
+/* INTRO SECTION */
+.intro-section{background:var(--white);padding:100px 6vw}
+.intro-inner{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:80px;align-items:center;
+}
+.intro-left h2{font-size:clamp(28px,3vw,42px);line-height:1.12;color:var(--navy);margin-bottom:24px}
+.intro-left h3{
+  font-family:var(--font-sans);
+  font-size:17px;font-weight:300;
+  color:var(--slate);
+  line-height:1.8;
+  margin-bottom:20px;
+}
+.intro-left p{font-size:15px;color:var(--slate);line-height:1.85;margin-bottom:16px}
+.intro-left .cta-wrap{margin-top:36px}
+.intro-right{
+  background:var(--navy);
+  padding:52px 48px;
+  position:relative;
+}
+.intro-right-label{
+  font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;
+  color:var(--gold-light);margin-bottom:32px;
+}
+.intro-stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(255,255,255,0.07)}
+.intro-stat{
+  background:var(--navy);padding:28px 24px;
+  border-right:1px solid rgba(255,255,255,0.07);
+  border-bottom:1px solid rgba(255,255,255,0.07);
+}
+.intro-stat-val{
+  font-family:var(--font-serif);font-size:38px;font-weight:700;color:var(--white);line-height:1;
+}
+.intro-stat-label{font-size:12px;color:rgba(255,255,255,0.4);margin-top:8px;letter-spacing:0.5px}
+.intro-bg-dot{
+  position:absolute;top:0;right:0;
+  background-image:radial-gradient(rgba(184,146,42,0.12) 1px, transparent 1px);
+  background-size:16px 16px;
+  width:120px;height:120px;
+}
+
+/* TRUSTED LOGOS */
+.trusted{background:var(--cream);padding:48px 6vw;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.trusted-label{font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--slate-light);margin-bottom:32px;text-align:center}
+.logos-row{display:flex;justify-content:center;gap:56px;flex-wrap:wrap;align-items:center}
+.logo-item{font-family:var(--font-serif);font-size:15px;font-weight:700;color:var(--line-strong);letter-spacing:0.5px}
+
+/* PROBLEM SECTION */
+.problem-section{background:var(--white)}
+.problem-stats{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:1px;background:var(--line);
+  border:1px solid var(--line);
+  margin-bottom:64px;
+}
+.problem-stat{
+  background:var(--white);padding:40px 32px;
+  text-align:center;
+}
+.p-stat-num{
+  font-family:var(--font-serif);font-size:48px;font-weight:700;color:var(--gold);line-height:1;margin-bottom:12px;
+}
+.p-stat-label{font-size:14px;color:var(--slate);line-height:1.7;max-width:200px;margin:0 auto}
+
+.problem-h2{font-size:clamp(26px,3vw,40px);font-weight:700;color:var(--navy);line-height:1.15;margin-bottom:20px}
+.problem-h3{
+  font-family:var(--font-sans);font-size:16px;font-weight:300;
+  color:var(--slate);line-height:1.85;max-width:640px;margin-bottom:32px;
+}
+.problem-list{list-style:none;margin-bottom:32px}
+.problem-list li{
+  padding:16px 0 16px 32px;
+  border-bottom:1px solid var(--line);
+  font-size:15px;color:var(--slate);
+  line-height:1.75;
+  position:relative;
+}
+.problem-list li::before{
+  content:'';
+  position:absolute;left:0;top:50%;transform:translateY(-50%);
+  width:8px;height:8px;background:var(--gold);
+}
+.problem-callout{
+  background:var(--navy);
+  padding:48px 52px;
+  display:grid;grid-template-columns:1fr auto;gap:40px;align-items:center;
+  margin-top:20px;
+}
+.problem-callout p{font-size:16px;color:rgba(255,255,255,0.6);line-height:1.85}
+.problem-callout strong{display:block;font-family:var(--font-serif);font-size:26px;color:var(--white);margin-bottom:12px}
+
+/* HOW WE WORK */
+.how-section{background:var(--cream)}
+.how-highlight{
+  font-size:18px;font-weight:400;
+  color:var(--navy);line-height:1.75;
+  border-left:3px solid var(--gold);
+  padding-left:24px;
+  margin-bottom:56px;
+  font-style:italic;
+}
+.how-highlight strong{font-style:normal;color:var(--gold)}
+.how-cards{
+  display:grid;grid-template-columns:repeat(2,1fr);
+  gap:24px;
+}
+.how-card{
+  background:var(--white);
+  border:1px solid var(--line);
+  padding:44px 40px;
+  transition:border-color .25s,box-shadow .25s;
+  position:relative;overflow:hidden;
+}
+.how-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:var(--gold);transform:scaleX(0);transform-origin:left;
+  transition:transform .3s ease;
+}
+.how-card:hover::before{transform:scaleX(1)}
+.how-card:hover{border-color:rgba(184,146,42,0.3);box-shadow:0 8px 32px rgba(12,26,53,0.08)}
+.how-num{font-family:var(--font-mono);font-size:11px;color:var(--slate-light);letter-spacing:2px;margin-bottom:20px}
+.how-card h3{font-family:var(--font-serif);font-size:21px;font-weight:700;color:var(--navy);margin-bottom:14px}
+.how-card p{font-size:14px;color:var(--slate);line-height:1.8}
+
+/* CAPABILITIES */
+.capabilities{background:var(--white)}
+.cap-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  border:1px solid var(--line);
+}
+.cap-card{
+  padding:44px 36px;
+  border-right:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+  transition:background .25s;
+  position:relative;
+}
+.cap-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:var(--gold);transform:scaleX(0);transform-origin:left;
+  transition:transform .3s ease;
+}
+.cap-card:hover::before{transform:scaleX(1)}
+.cap-card:hover{background:var(--cream)}
+.cap-num{font-family:var(--font-mono);font-size:11px;color:var(--slate-light);letter-spacing:2px;margin-bottom:20px}
+.cap-card h3{font-family:var(--font-serif);font-size:20px;font-weight:700;color:var(--navy);margin-bottom:14px}
+.cap-card p{font-size:14px;color:var(--slate);line-height:1.75}
+.cap-link{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase;
+  color:var(--gold);text-decoration:none;margin-top:28px;
+  transition:gap .2s;
+}
+.cap-card:hover .cap-link{gap:10px}
+
+/* INDUSTRIES */
+.industries{background:var(--navy)}
+.industries .section-label{color:var(--gold-light)}
+.industries .section-label::after{background:var(--gold-light)}
+.industries h2{color:var(--white)}
+.industries .lead{color:rgba(255,255,255,0.5)}
+.industry-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:1px;background:rgba(255,255,255,0.07);
+  margin-top:56px;
+}
+.industry-tile{
+  background:var(--navy);
+  padding:44px 36px;
+  position:relative;overflow:hidden;
+  cursor:default;
+  transition:background .25s;
+}
+.industry-tile:hover{background:var(--navy-mid)}
+.industry-tile-num{
+  font-family:var(--font-mono);font-size:11px;
+  color:rgba(255,255,255,0.2);letter-spacing:2px;margin-bottom:20px;
+}
+.industry-tile h3{
+  font-family:var(--font-serif);font-size:20px;font-weight:700;
+  color:var(--white);margin-bottom:14px;
+}
+.industry-tile p{font-size:14px;color:rgba(255,255,255,0.5);line-height:1.8}
+.industry-tile-accent{
+  position:absolute;bottom:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg, var(--gold) 0%, transparent 100%);
+  opacity:0;transition:opacity .3s;
+}
+.industry-tile:hover .industry-tile-accent{opacity:1}
+
+/* EXPERTISE (same as original) */
+.expertise{background:var(--navy);padding:100px 6vw}
+.expertise .section-label{color:var(--gold-light)}
+.expertise .section-label::after{background:var(--gold-light)}
+.expertise h2{color:var(--white)}
+.exp-grid{
+  display:grid;grid-template-columns:1fr 2fr;gap:1px;
+  border:1px solid rgba(255,255,255,.07);
+  margin-top:56px;
+}
+.exp-menu{border-right:1px solid rgba(255,255,255,.07)}
+.exp-item{
+  padding:24px 32px;
+  border-bottom:1px solid rgba(255,255,255,.07);
+  cursor:pointer;transition:background .2s;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.exp-item:hover,.exp-item.active{background:rgba(255,255,255,.05)}
+.exp-item.active .exp-item-name{color:var(--gold-light)}
+.exp-item-num{font-family:var(--font-mono);font-size:11px;color:rgba(255,255,255,.25);letter-spacing:2px}
+.exp-item-name{font-size:15px;font-weight:500;color:rgba(255,255,255,.7);transition:color .2s}
+.exp-arrow{font-size:16px;color:rgba(255,255,255,.15);transition:color .2s}
+.exp-item.active .exp-arrow{color:var(--gold-light)}
+.exp-panel{padding:52px 48px;display:none}
+.exp-panel.active{display:block;animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.exp-panel h3{font-family:var(--font-serif);font-size:28px;font-weight:700;color:var(--white);margin-bottom:16px}
+.exp-panel p{font-size:15px;color:rgba(255,255,255,.55);line-height:1.85;max-width:440px}
+.exp-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:28px}
+.exp-tag{
+  padding:5px 14px;
+  border:1px solid rgba(184,146,42,.35);
+  font-size:12px;color:var(--gold-light);
+  font-weight:500;letter-spacing:0.5px;
+}
+.exp-metrics{display:flex;gap:40px;margin-top:40px;padding-top:32px;border-top:1px solid rgba(255,255,255,.07)}
+.exp-metric-val{font-family:var(--font-serif);font-size:30px;font-weight:700;color:var(--white)}
+.exp-metric-label{font-size:12px;color:rgba(255,255,255,.35);margin-top:4px;letter-spacing:0.5px}
+
+/* TRUST PROOF */
+.trust-proof{background:var(--white)}
+.trust-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  border:1px solid var(--line);
+  margin-top:56px;
+}
+.trust-item{
+  padding:48px 36px;
+  border-right:1px solid var(--line);
+  position:relative;overflow:hidden;
+  transition:background .25s;
+}
+.trust-item:last-child{border-right:0}
+.trust-item:hover{background:var(--cream)}
+.trust-item::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:var(--gold);transform:scaleX(0);transform-origin:left;
+  transition:transform .35s ease;
+}
+.trust-item:hover::before{transform:scaleX(1)}
+.trust-icon-wrap{
+  width:48px;height:48px;
+  border:1px solid var(--line);
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:28px;
+  background:var(--white);
+  transition:border-color .25s,background .25s;
+}
+.trust-item:hover .trust-icon-wrap{
+  border-color:rgba(255,94,0,0.3);
+  background:rgba(255,94,0,0.04);
+}
+.trust-num{
+  font-family:var(--font-serif);font-size:36px;font-weight:700;
+  color:var(--navy);line-height:1;margin-bottom:8px;
+}
+.trust-title{font-family:var(--font-serif);font-size:17px;font-weight:700;color:var(--navy);margin-bottom:10px;line-height:1.3}
+.trust-desc{font-size:13px;color:var(--slate);line-height:1.75}
+
+/* CASE STUDIES */
+.case-section{background:var(--cream)}
+.case-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;margin-top:56px}
+.case-card{
+  background:var(--white);
+  border:1px solid var(--line);
+  padding:44px 40px;
+  transition:border-color .25s;
+  position:relative;
+}
+.case-card:hover{border-color:var(--gold)}
+.case-sector{
+  display:inline-block;
+  font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;
+  color:var(--gold);border-bottom:1px solid var(--gold);padding-bottom:2px;
+  margin-bottom:24px;
+}
+.case-card h3{font-family:var(--font-serif);font-size:22px;font-weight:700;color:var(--navy);margin-bottom:16px;line-height:1.3}
+.case-card p{font-size:14px;color:var(--slate);line-height:1.8}
+.case-result{
+  margin-top:36px;padding-top:28px;
+  border-top:1px solid var(--line);
+  display:flex;gap:36px;
+}
+.result-val{font-family:var(--font-serif);font-size:32px;font-weight:700;color:var(--navy)}
+.result-label{font-size:12px;color:var(--slate-light);margin-top:4px;letter-spacing:0.5px;text-transform:uppercase}
+.case-tech{
+  position:absolute;top:32px;right:32px;
+  font-family:var(--font-mono);font-size:11px;
+  color:var(--slate-light);letter-spacing:1px;
+}
+
+/* TESTIMONIALS */
+.testimonials{background:var(--gold-pale)}
+.testimonial-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-top:56px}
+.testimonial{
+  background:var(--white);
+  border:1px solid rgba(184,146,42,.2);
+  padding:44px 40px;
+}
+.t-quote{
+  font-family:var(--font-serif);
+  font-size:60px;line-height:.6;
+  color:var(--gold);display:block;margin-bottom:20px;
+  font-weight:700;
+}
+.testimonial blockquote{
+  font-size:15px;font-weight:300;color:var(--slate);
+  line-height:1.85;font-style:italic;
+}
+.t-author{margin-top:32px;padding-top:24px;border-top:1px solid rgba(184,146,42,.15)}
+.t-name{font-size:14px;font-weight:600;color:var(--navy)}
+.t-role{font-size:12px;color:var(--slate-light);margin-top:3px;letter-spacing:0.5px}
+
+/* PARTNERS */
+.partners{background:var(--white);padding:60px 6vw;text-align:center}
+.partners-label{font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--slate-light);margin-bottom:36px}
+.partners-row{display:flex;justify-content:center;gap:60px;flex-wrap:wrap;align-items:center}
+.partner{font-family:var(--font-serif);font-size:16px;font-weight:700;color:var(--line-strong);letter-spacing:0.5px}
+
+/* FINAL CTA */
+.final-cta{background:var(--navy);padding:100px 6vw}
+.final-cta-inner{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:1px;border:1px solid rgba(255,255,255,.07);
+}
+.final-cta-left{padding:72px 60px}
+.final-cta-left .section-label{color:var(--gold-light)}
+.final-cta-left .section-label::after{background:var(--gold-light)}
+.final-cta-left h2{color:var(--white);margin-bottom:20px}
+.final-cta-left p{font-size:15px;color:rgba(255,255,255,.5);line-height:1.85;max-width:360px;margin-bottom:16px}
+.final-cta-right{
+  padding:72px 60px;
+  border-left:1px solid rgba(255,255,255,.07);
+  background:rgba(255,255,255,0.03);
+}
+.assessment-title{
+  font-family:var(--font-serif);font-size:22px;font-weight:700;
+  color:var(--white);margin-bottom:28px;padding-bottom:20px;
+  border-bottom:1px solid rgba(255,255,255,0.07);
+}
+.assessment-list{list-style:none}
+.assessment-list li{
+  padding:14px 0 14px 28px;
+  border-bottom:1px solid rgba(255,255,255,0.06);
+  font-size:14px;color:rgba(255,255,255,0.55);
+  line-height:1.7;position:relative;
+}
+.assessment-list li::before{
+  content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);
+  width:6px;height:6px;background:var(--gold);
+}
+.final-cta-right .btn-gold{
+  background:var(--gold);color:var(--white);
+  padding:14px 36px;
+  font-size:13px;font-weight:600;letter-spacing:1px;text-transform:uppercase;
+  border:none;cursor:pointer;
+  font-family:var(--font-sans);
+  transition:background .2s;width:100%;margin-top:32px;
+  display:block;text-align:center;text-decoration:none;
+}
+.final-cta-right .btn-gold:hover{background:var(--gold-light)}
+
+/* CONTACT */
+.contact{background:var(--navy)}
+.contact-inner{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:1px;border:1px solid rgba(255,255,255,.07);
+}
+.contact-left{padding:72px 60px}
+.contact-left .section-label{color:var(--gold-light)}
+.contact-left .section-label::after{background:var(--gold-light)}
+.contact-left h2{color:var(--white);margin-bottom:20px}
+.contact-left p{font-size:15px;color:rgba(255,255,255,.5);line-height:1.85;max-width:380px}
+.contact-offices{margin-top:48px;display:flex;flex-direction:column;gap:0}
+.office{padding:20px 0;border-bottom:1px solid rgba(255,255,255,.06)}
+.office-city{font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--gold-light);margin-bottom:6px}
+.office-addr{font-size:13px;color:rgba(255,255,255,.4);line-height:1.6}
+.contact-right{padding:72px 60px;border-left:1px solid rgba(255,255,255,.07)}
+.form-row{margin-bottom:24px}
+.form-label{font-size:12px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:10px;display:block}
+.form-input{
+  width:100%;padding:13px 18px;
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.12);
+  color:var(--white);font-size:15px;
+  font-family:var(--font-sans);
+  outline:none;transition:border-color .2s;
+}
+.form-input:focus{border-color:var(--gold)}
+.form-input::placeholder{color:rgba(255,255,255,.2)}
+textarea.form-input{resize:none;height:120px}
+.btn-gold{
+  background:var(--gold);color:var(--white);
+  padding:14px 36px;
+  font-size:13px;font-weight:600;letter-spacing:1px;text-transform:uppercase;
+  border:none;cursor:pointer;
+  font-family:var(--font-sans);
+  transition:background .2s;width:100%;margin-top:8px;
+}
+.btn-gold:hover{background:var(--gold-light)}
+
+/* ADDEND TAGLINE */
+.addend-tag{background:var(--navy-mid);padding:64px 6vw;text-align:center;border-top:1px solid rgba(255,255,255,0.06)}
+.addend-tag h2{
+  font-size:clamp(24px,3vw,40px);
+  color:var(--white);margin-bottom:16px;
+}
+.addend-tag p{font-size:16px;color:rgba(255,255,255,0.5);max-width:540px;margin:0 auto 36px;line-height:1.8}
+.addend-tag a{
+  background:var(--gold);color:var(--white);
+  padding:14px 36px;
+  font-size:13px;font-weight:600;letter-spacing:1px;text-transform:uppercase;
+  text-decoration:none;
+  transition:background .2s;display:inline-block;
+}
+.addend-tag a:hover{background:var(--gold-light)}
+
+/* FOOTER */
+footer{background:#070f1e;padding:48px 6vw 32px}
+.footer-row{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:24px}
+.footer-logo{font-family:var(--font-serif);font-size:18px;font-weight:700;color:rgba(255,255,255,.7)}
+.footer-logo span{color:var(--gold-light)}
+.footer-links{display:flex;gap:28px;list-style:none;flex-wrap:wrap}
+.footer-links a{font-size:13px;color:rgba(255,255,255,.3);text-decoration:none;transition:color .2s}
+.footer-links a:hover{color:rgba(255,255,255,.7)}
+.footer-bottom{margin-top:32px;padding-top:24px;border-top:1px solid rgba(255,255,255,.06);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.footer-copy{font-size:12px;color:rgba(255,255,255,.2)}
+.iso{font-family:var(--font-mono);font-size:11px;color:rgba(255,255,255,.2);letter-spacing:1px}
+
+/* SCROLL REVEAL */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease}
+.reveal.visible{opacity:1;transform:none}
+
+/* RESPONSIVE */
+@media(max-width:1100px){
+  .trust-grid{grid-template-columns:repeat(2,1fr)}
+  .trust-item:nth-child(2){border-right:0}
+  .trust-item:nth-child(3){border-right:1px solid var(--line)}
+  .trust-item{border-bottom:1px solid var(--line)}
+}
+@media(max-width:500px){
+  .trust-grid{grid-template-columns:1fr}
+  .trust-item{border-right:0}
+}
+@media(max-width:900px){
+  .intro-inner{grid-template-columns:1fr}
+  .how-cards{grid-template-columns:1fr}
+  .cap-grid{grid-template-columns:1fr 1fr}
+  .industry-grid{grid-template-columns:1fr 1fr}
+  .exp-grid{grid-template-columns:1fr}
+  .exp-menu{border-right:none;border-bottom:1px solid rgba(255,255,255,.07)}
+  .case-grid{grid-template-columns:1fr}
+  .testimonial-grid{grid-template-columns:1fr}
+  .final-cta-inner{grid-template-columns:1fr}
+  .final-cta-right{border-left:none;border-top:1px solid rgba(255,255,255,.07)}
+  .contact-inner{grid-template-columns:1fr}
+  .contact-right{border-left:none;border-top:1px solid rgba(255,255,255,.07)}
+  .nav-links{display:none}
+  .nav-phone{display:none}
+  .problem-callout{grid-template-columns:1fr}
+  .problem-stats{grid-template-columns:1fr 1fr}
+}
+@media(max-width:600px){
+  .cap-grid{grid-template-columns:1fr}
+  .industry-grid{grid-template-columns:1fr}
+  .trust-grid{grid-template-columns:1fr}
+  .problem-stats{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-left">
+    <a href="#" class="nav-logo">
+      <img src="./logo.png" alt="Addend Analytics" style="height:36px;width:auto;display:block;" loading="eager">
+    </a>
+    <ul class="nav-links">
+      <li><a href="#services">Services</a></li>
+      <li><a href="#industries">Industries</a></li>
+      <li><a href="#expertise">Expertise</a></li>
+      <li><a href="#casestudies">Case Studies</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+  <div class="nav-right">
+    <span class="nav-phone">+1 470 686 6644</span>
+    <a href="#contact" class="nav-cta">Book Assessment</a>
+  </div>
+</nav>
+
+<!-- HERO CAROUSEL -->
+<div class="hero-carousel" aria-label="Hero Carousel">
+
+  <!-- Slide 1 -->
+  <div class="slide active" role="group" aria-label="Slide 1 of 3">
+    <div class="slide-bg" style="background-image:url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1800&q=80&fit=crop')"></div>
+    <div class="slide-overlay"></div>
+    <div class="slide-content">
+      <span class="slide-tag">Operational Analytics</span>
+      <h1>From Dashboards<br>to Decisions</h1>
+      <div class="slide-divider"></div>
+      <p class="caption">Operational analytics that turn data into smarter business decisions.</p>
+      <p class="sub">Addend delivers data analytics consulting, operational analytics, and AI-driven analytics solutions that turn enterprise data into real business outcomes.</p>
+      <div class="slide-actions">
+        <a href="#contact" class="btn-primary">Talk to an Expert →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 2 -->
+  <div class="slide" role="group" aria-label="Slide 2 of 3">
+    <div class="slide-bg" style="background-image:url('https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1800&q=80&fit=crop')"></div>
+    <div class="slide-overlay"></div>
+    <div class="slide-content">
+      <span class="slide-tag">Data Integration</span>
+      <h1>Your Data Lives<br>Everywhere</h1>
+      <div class="slide-divider"></div>
+      <p class="caption">ERP systems, spreadsheets, dashboards, and reports.</p>
+      <p class="sub">Addend connects operational data and applies analytics and AI to create a unified view for smarter decisions.</p>
+      <div class="slide-actions">
+        <a href="#services" class="btn-primary">Explore Analytics Solutions →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 3 -->
+  <div class="slide" role="group" aria-label="Slide 3 of 3">
+    <div class="slide-bg" style="background-image:url('https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=1800&q=80&fit=crop')"></div>
+    <div class="slide-overlay"></div>
+    <div class="slide-content">
+      <span class="slide-tag">Industry Solutions</span>
+      <h1>Analytics & AI Built<br>for Complex Industries</h1>
+      <div class="slide-divider"></div>
+      <p class="caption">Manufacturing. Law Firms. CPG. Professional Services. Nonprofits.</p>
+      <p class="sub">Addend provides data analytics consulting, enterprise analytics solutions, and applied AI services designed for industry-specific operational challenges.</p>
+      <div class="slide-actions">
+        <a href="#industries" class="btn-primary">Explore Industry Solutions →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dots -->
+  <div class="carousel-dots" role="tablist" aria-label="Carousel navigation">
+    <button class="dot active" data-index="0" role="tab" aria-label="Go to slide 1" aria-selected="true"></button>
+    <button class="dot" data-index="1" role="tab" aria-label="Go to slide 2" aria-selected="false"></button>
+    <button class="dot" data-index="2" role="tab" aria-label="Go to slide 3" aria-selected="false"></button>
+  </div>
+  <!-- Arrows -->
+  <div class="carousel-arrows">
+    <button class="carousel-arrow" id="prev-slide" aria-label="Previous slide">&#8592;</button>
+    <button class="carousel-arrow" id="next-slide" aria-label="Next slide">&#8594;</button>
+  </div>
+</div>
+
+<!-- INTRO / H1 SECTION -->
+<section class="intro-section reveal" id="about">
+  <div class="intro-inner">
+    <div class="intro-left">
+      <div class="section-label">Who We Are</div>
+      <h2>Operational Analytics &amp; Applied AI Consulting for Enterprise Decision-Making</h2>
+      <h3>Most organisations don't lack data, dashboards, or reports. They lack operational analytics and AI systems that actually influence decisions and business outcomes.</h3>
+      <p>Addend Analytics is a data analytics consulting and applied AI services firm that helps mid-market and enterprise organisations implement operational analytics, AI-driven analytics solutions, and enterprise data platforms that turn operational data into real business decisions.</p>
+      <p>Our analytics and AI solutions are production-ready, governed, and designed to deliver measurable ROI.</p>
+      <div class="cta-wrap">
+        <a href="#contact" class="btn-primary" style="background:var(--navy);border-color:var(--navy);">Book a 30-Min Assessment →</a>
+      </div>
+    </div>
+    <div class="intro-right">
+      <div class="intro-bg-dot"></div>
+      <div class="intro-right-label">Trusted Benchmarks</div>
+      <div class="intro-stats-grid">
+        <div class="intro-stat">
+          <div class="intro-stat-val">6+</div>
+          <div class="intro-stat-label">Industries Served</div>
+        </div>
+        <div class="intro-stat">
+          <div class="intro-stat-val">3</div>
+          <div class="intro-stat-label">Global Offices</div>
+        </div>
+        <div class="intro-stat">
+          <div class="intro-stat-val">ISO</div>
+          <div class="intro-stat-label">9001 Certified</div>
+        </div>
+        <div class="intro-stat">
+          <div class="intro-stat-val">100%</div>
+          <div class="intro-stat-label">Microsoft Ecosystem</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUSTED LOGOS -->
+<div class="trusted">
+  <div class="trusted-label">Trusted by Teams Solving Complex Data &amp; AI Challenges</div>
+  <div class="logos-row">
+    <span class="logo-item">Microsoft</span>
+    <span class="logo-item">Power BI</span>
+    <span class="logo-item">Microsoft Fabric</span>
+    <span class="logo-item">Dynamics 365</span>
+    <span class="logo-item">Azure</span>
+    <span class="logo-item">OneLake</span>
+  </div>
+</div>
+
+<!-- PROBLEM SECTION -->
+<section class="problem-section reveal" id="problem">
+  <div class="section-header">
+    <div class="section-label">The Challenge</div>
+    <h2>Why Most Analytics &amp; AI Initiatives<br>Struggle to Deliver <em>Impact</em></h2>
+    <p class="lead">Despite heavy investment in data and analytics, many organisations still struggle to turn insights into operational decisions.</p>
+  </div>
+
+  <div class="problem-stats">
+    <div class="problem-stat">
+      <div class="p-stat-num">60%</div>
+      <div class="p-stat-label">of BI and analytics initiatives fail to deliver meaningful business value</div>
+    </div>
+    <div class="problem-stat">
+      <div class="p-stat-num">20%</div>
+      <div class="p-stat-label">of analytics insights translate into measurable business outcomes</div>
+    </div>
+    <div class="problem-stat">
+      <div class="p-stat-num">87%</div>
+      <div class="p-stat-label">of data science projects never reach production environments</div>
+    </div>
+  </div>
+
+  <h2 class="problem-h2">The Problem Isn't Data.<br>It's What Happens After the Report</h2>
+  <p class="problem-h3">Most organisations already have enterprise data analytics dashboards, reports, and analytics teams. Yet operational decisions still rely on manual reconciliation, delayed insights, and conflicting interpretations of data.</p>
+
+  <ul class="problem-list">
+    <li>Business intelligence dashboards exist, but meetings still revolve around reconciling numbers from multiple systems and reports.</li>
+    <li>Analytics teams generate insights, yet business teams debate the data instead of acting on it to enable data-driven decision making.</li>
+    <li>AI and advanced analytics initiatives remain stuck in pilots, demos, or proof-of-concept projects that never reach production environments.</li>
+    <li>Leaders hesitate to act because operational data and analytics insights are fragmented, delayed, or difficult to trust.</li>
+  </ul>
+
+  <div class="problem-callout">
+    <div>
+      <strong>Turn Data into Decisions</strong>
+      <p>Addend helps organisations overcome these challenges by implementing operational analytics platforms and applied AI solutions designed for real decision-making and measurable outcomes.</p>
+    </div>
+    <a href="#contact" class="btn-primary" style="white-space:nowrap;border-color:rgba(255,255,255,0.3);">Talk to our AI Experts →</a>
+  </div>
+</section>
+
+<!-- HOW WE WORK -->
+<section class="how-section reveal" id="how">
+  <div class="section-header">
+    <div class="section-label">Our Approach</div>
+    <h2>How Addend Turns Analytics &amp; AI Into<br><em>Operational Advantage</em></h2>
+    <p class="lead">Addend helps organisations move beyond dashboards and experimental AI projects by building operational analytics platforms and AI-driven analytics systems that support real business decisions.</p>
+  </div>
+  <p class="how-highlight"><strong>Our focus is simple:</strong> analytics and AI must operate inside the business, not just inside reports.</p>
+
+  <div class="how-cards">
+    <div class="how-card">
+      <div class="how-num">01 — Foundation</div>
+      <h3>Enterprise Data &amp; Analytics Foundation</h3>
+      <p>We design and implement enterprise data platforms and modern analytics architectures that unify operational data across systems, enabling trusted and scalable analytics.</p>
+    </div>
+    <div class="how-card">
+      <div class="how-num">02 — Operations</div>
+      <h3>Operational Analytics for Decision-Making</h3>
+      <p>Addend builds operational analytics solutions that embed insights directly into business workflows, helping teams make data-driven decisions in real time.</p>
+    </div>
+    <div class="how-card">
+      <div class="how-num">03 — AI</div>
+      <h3>Production-Ready AI &amp; Advanced Analytics</h3>
+      <p>We develop and deploy AI-driven analytics, machine learning solutions, and applied AI systems that operate reliably in production environments.</p>
+    </div>
+    <div class="how-card">
+      <div class="how-num">04 — Intelligence</div>
+      <h3>Decision Intelligence Across the Enterprise</h3>
+      <p>Analytics and AI outputs are integrated into operational systems and processes, enabling leaders and teams to act faster with trusted enterprise analytics insights.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES / CAPABILITIES -->
+<section class="capabilities reveal" id="services">
+  <div class="section-header">
+    <div class="section-label">Our Services</div>
+    <h2>Data Analytics &amp; Applied AI Services</h2>
+    <p class="lead">Focused capabilities that help organisations design, build, and scale enterprise data analytics platforms, operational analytics, and applied AI solutions.</p>
+  </div>
+  <div class="cap-grid">
+    <div class="cap-card">
+      <div class="cap-num">01 — Strategy</div>
+      <h3>Analytics &amp; AI Strategy</h3>
+      <p>Define where to start and what to prioritise with a clear analytics and AI strategy roadmap. Focus on high-value use cases, governance, and sequencing that support data-driven business decisions.</p>
+      <a href="#contact" class="cap-link">Learn More →</a>
+    </div>
+    <div class="cap-card">
+      <div class="cap-num">02 — Engineering</div>
+      <h3>Data Engineering</h3>
+      <p>Build production-grade data engineering pipelines and modern data platforms using Microsoft Fabric, Synapse, and OneLake. Scalable foundations designed for enterprise analytics and AI workloads.</p>
+      <a href="#contact" class="cap-link">Learn More →</a>
+    </div>
+    <div class="cap-card">
+      <div class="cap-num">03 — Analytics</div>
+      <h3>Decision-Ready Analytics</h3>
+      <p>Design Power BI dashboards and embedded analytics that provide trusted insights. Semantic models and self-service analytics governed by policies enable faster data-driven decision-making.</p>
+      <a href="#contact" class="cap-link">Learn More →</a>
+    </div>
+    <div class="cap-card">
+      <div class="cap-num">04 — AI</div>
+      <h3>Applied AI</h3>
+      <p>Deploy predictive, prescriptive, and generative AI solutions integrated into business workflows. Covers model lifecycle, governance, monitoring, and practical adoption.</p>
+      <a href="#contact" class="cap-link">Learn More →</a>
+    </div>
+    <div class="cap-card">
+      <div class="cap-num">05 — POC</div>
+      <h3>Proof of Concept (POC)</h3>
+      <p>Validate analytics and AI opportunities through rapid proof-of-concept development. Demonstrate feasibility and business value before full-scale implementation.</p>
+      <a href="#contact" class="cap-link">Learn More →</a>
+    </div>
+    <div class="cap-card">
+      <div class="cap-num">06 — Accelerators</div>
+      <h3>Analytics Accelerators</h3>
+      <p>Accelerate delivery with pre-built analytics frameworks, reusable data models, and AI accelerators. Reduce implementation time while enabling faster enterprise analytics deployment.</p>
+      <a href="#contact" class="cap-link">Learn More →</a>
+    </div>
+  </div>
+</section>
+
+<!-- INDUSTRIES -->
+<section class="industries reveal" id="industries">
+  <div class="section-header">
+    <div class="section-label">Industries We Serve</div>
+    <h2 style="color:var(--white)">Sector-specific solutions for<br>complex, <em style="color:var(--gold-light)">data-driven industries</em></h2>
+    <p class="lead">Addend delivers data analytics consulting and applied AI solutions designed for the operational challenges of complex, data-driven industries.</p>
+  </div>
+  <div class="industry-grid">
+    <div class="industry-tile">
+      <div class="industry-tile-num">01</div>
+      <h3>Manufacturing</h3>
+      <p>Optimising production, supply chains, and operational performance with manufacturing analytics and AI-driven insights.</p>
+      <div class="industry-tile-accent"></div>
+    </div>
+    <div class="industry-tile">
+      <div class="industry-tile-num">02</div>
+      <h3>Professional Services</h3>
+      <p>Improving utilisation, project visibility, and profitability through enterprise analytics and operational intelligence.</p>
+      <div class="industry-tile-accent"></div>
+    </div>
+    <div class="industry-tile">
+      <div class="industry-tile-num">03</div>
+      <h3>Consumer Packaged Goods</h3>
+      <p>Enhancing demand forecasting, pricing strategy, and distribution performance using advanced analytics and AI solutions.</p>
+      <div class="industry-tile-accent"></div>
+    </div>
+    <div class="industry-tile">
+      <div class="industry-tile-num">04</div>
+      <h3>Law Firms</h3>
+      <p>Transforming legal and financial data into actionable insights for matter performance, profitability, and firm strategy.</p>
+      <div class="industry-tile-accent"></div>
+    </div>
+    <div class="industry-tile">
+      <div class="industry-tile-num">05</div>
+      <h3>Non-Profit</h3>
+      <p>Supporting data-driven program management and impact measurement through modern analytics platforms.</p>
+      <div class="industry-tile-accent"></div>
+    </div>
+    <div class="industry-tile">
+      <div class="industry-tile-num">06</div>
+      <h3>Retail &amp; Financial Services</h3>
+      <p>Compliance-ready dashboards, forecasting, and consumer analytics for retail chains and financial services organisations.</p>
+      <div class="industry-tile-accent"></div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERTISE (Interactive tabs — original) -->
+<section class="expertise reveal" id="expertise">
+  <div class="section-header">
+    <div class="section-label">Deep Industry Expertise</div>
+    <h2 style="color:var(--white)">Sector-specific knowledge,<br>applied with <em style="color:var(--gold-light)">precision</em></h2>
+  </div>
+  <div class="exp-grid">
+    <div class="exp-menu">
+      <div class="exp-item active" data-panel="mfg">
+        <span class="exp-item-num">01</span>
+        <span class="exp-item-name">Manufacturing</span>
+        <span class="exp-arrow">→</span>
+      </div>
+      <div class="exp-item" data-panel="profserv">
+        <span class="exp-item-num">02</span>
+        <span class="exp-item-name">Professional Services</span>
+        <span class="exp-arrow">→</span>
+      </div>
+      <div class="exp-item" data-panel="cpg">
+        <span class="exp-item-num">03</span>
+        <span class="exp-item-name">CPG</span>
+        <span class="exp-arrow">→</span>
+      </div>
+      <div class="exp-item" data-panel="law">
+        <span class="exp-item-num">04</span>
+        <span class="exp-item-name">Law Firms</span>
+        <span class="exp-arrow">→</span>
+      </div>
+      <div class="exp-item" data-panel="nonprofit">
+        <span class="exp-item-num">05</span>
+        <span class="exp-item-name">Non-Profit</span>
+        <span class="exp-arrow">→</span>
+      </div>
+      <div class="exp-item" data-panel="retail">
+        <span class="exp-item-num">06</span>
+        <span class="exp-item-name">Retail &amp; Finance</span>
+        <span class="exp-arrow">→</span>
+      </div>
+    </div>
+    <div>
+      <div class="exp-panel active" id="panel-mfg">
+        <h3>Manufacturing</h3>
+        <p>We help manufacturers connect production lines, supply chain systems, and ERP tools into a single unified analytics platform. Our Microsoft Fabric implementations deliver real-time OEE tracking, downtime analysis, and quality control dashboards.</p>
+        <div class="exp-tags">
+          <span class="exp-tag">OEE Tracking</span>
+          <span class="exp-tag">Supply Chain</span>
+          <span class="exp-tag">ERP Integration</span>
+          <span class="exp-tag">Microsoft Fabric</span>
+          <span class="exp-tag">Predictive Maintenance</span>
+        </div>
+        <div class="exp-metrics">
+          <div><div class="exp-metric-val">60%</div><div class="exp-metric-label">Avg. Reporting Time Saved</div></div>
+          <div><div class="exp-metric-val">Real-Time</div><div class="exp-metric-label">Production Visibility</div></div>
+        </div>
+      </div>
+      <div class="exp-panel" id="panel-profserv">
+        <h3>Professional Services</h3>
+        <p>Improving utilisation rates, project visibility, and profitability through enterprise analytics and operational intelligence tailored for professional services firms and consultancies.</p>
+        <div class="exp-tags">
+          <span class="exp-tag">Utilisation Analytics</span>
+          <span class="exp-tag">Project Profitability</span>
+          <span class="exp-tag">Resource Planning</span>
+          <span class="exp-tag">Power BI</span>
+        </div>
+        <div class="exp-metrics">
+          <div><div class="exp-metric-val">Unified</div><div class="exp-metric-label">Project Intelligence</div></div>
+        </div>
+      </div>
+      <div class="exp-panel" id="panel-cpg">
+        <h3>Consumer Packaged Goods</h3>
+        <p>Enhancing demand forecasting, pricing strategy, and distribution performance using advanced analytics and AI solutions designed for CPG complexities across channels and markets.</p>
+        <div class="exp-tags">
+          <span class="exp-tag">Demand Forecasting</span>
+          <span class="exp-tag">Pricing Analytics</span>
+          <span class="exp-tag">Distribution Intelligence</span>
+          <span class="exp-tag">Applied AI</span>
+        </div>
+        <div class="exp-metrics">
+          <div><div class="exp-metric-val">AI-Driven</div><div class="exp-metric-label">Forecast Accuracy</div></div>
+        </div>
+      </div>
+      <div class="exp-panel" id="panel-law">
+        <h3>Law Firms</h3>
+        <p>Transforming legal and financial data into actionable insights for matter performance, profitability analysis, and firm-wide strategy. Purpose-built analytics for the legal sector.</p>
+        <div class="exp-tags">
+          <span class="exp-tag">Matter Performance</span>
+          <span class="exp-tag">Profitability Analytics</span>
+          <span class="exp-tag">Billing Intelligence</span>
+          <span class="exp-tag">Power BI</span>
+        </div>
+        <div class="exp-metrics">
+          <div><div class="exp-metric-val">Decision-Ready</div><div class="exp-metric-label">Partner Dashboards</div></div>
+        </div>
+      </div>
+      <div class="exp-panel" id="panel-nonprofit">
+        <h3>Non-Profit</h3>
+        <p>Supporting data-driven program management and impact measurement through modern analytics platforms. Donor analytics, grant reporting, and impact frameworks built for mission-driven organisations.</p>
+        <div class="exp-tags">
+          <span class="exp-tag">Impact Measurement</span>
+          <span class="exp-tag">Donor Analytics</span>
+          <span class="exp-tag">Grant Reporting</span>
+          <span class="exp-tag">Portfolio Reporting</span>
+        </div>
+        <div class="exp-metrics">
+          <div><div class="exp-metric-val">Custom</div><div class="exp-metric-label">KPI Frameworks</div></div>
+        </div>
+      </div>
+      <div class="exp-panel" id="panel-retail">
+        <h3>Retail &amp; Financial Services</h3>
+        <p>Help retail chains navigate shifting consumer trends with Power BI ecosystems connecting POS, inventory, and market intelligence. Compliance-ready dashboards for financial services organisations.</p>
+        <div class="exp-tags">
+          <span class="exp-tag">POS Integration</span>
+          <span class="exp-tag">Inventory Analytics</span>
+          <span class="exp-tag">Compliance Reporting</span>
+          <span class="exp-tag">Risk Analytics</span>
+        </div>
+        <div class="exp-metrics">
+          <div><div class="exp-metric-val">40%</div><div class="exp-metric-label">Faster Decision Cycles</div></div>
+          <div><div class="exp-metric-val">Unified</div><div class="exp-metric-label">Data View</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST PROOF -->
+<section class="trust-proof reveal">
+  <div class="section-header">
+    <div class="section-label">Why Addend</div>
+    <h2>Proof That Moves at the<br><em>Speed of Trust</em></h2>
+    <p class="lead">Our work consistently delivers outcomes leaders can rely on — where decision quality, trust, and execution speed directly impact performance.</p>
+  </div>
+  <div class="trust-grid">
+
+    <div class="trust-item">
+      <div class="trust-icon-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+      </div>
+      <div class="trust-num">40%</div>
+      <div class="trust-title">Faster, Confident Decisions</div>
+      <div class="trust-desc">Operational teams act sooner with decision-ready analytics embedded in their daily workflows.</div>
+    </div>
+
+    <div class="trust-item">
+      <div class="trust-icon-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+      </div>
+      <div class="trust-num">1</div>
+      <div class="trust-title">Trust Across Business &amp; IT</div>
+      <div class="trust-desc">A shared analytics foundation that leaders and teams align around — eliminating conflicting data narratives.</div>
+    </div>
+
+    <div class="trust-item">
+      <div class="trust-icon-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg>
+      </div>
+      <div class="trust-num">100%</div>
+      <div class="trust-title">AI-Ready Analytics Platforms</div>
+      <div class="trust-desc">Built for AI-driven decisioning, not just dashboards. Production-grade and governed from day one.</div>
+    </div>
+
+    <div class="trust-item">
+      <div class="trust-icon-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/><line x1="2" y1="20" x2="22" y2="20"/></svg>
+      </div>
+      <div class="trust-num">87%</div>
+      <div class="trust-title">Proven Real-World Adoption</div>
+      <div class="trust-desc">Delivered with measurable adoption and operational usage — not just demos and pilot reports.</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CASE STUDIES -->
+<section class="case-section reveal" id="casestudies">
+  <div class="section-header">
+    <div class="section-label">Case Studies</div>
+    <h2>Making analytics and AI work<br>where decisions <em>actually happen</em></h2>
+  </div>
+  <div class="case-grid">
+    <div class="case-card">
+      <span class="case-tech">Power BI</span>
+      <div class="case-sector">Retail</div>
+      <h3>Real-Time Intelligence for a Multi-Location Retail Chain</h3>
+      <p>A large retail chain faced rising costs and declining margins with no clear data visibility. We built a Power BI ecosystem connecting POS, inventory, and market data — replacing manual reporting with live operational insight across all locations.</p>
+      <div class="case-result">
+        <div><div class="result-val">40%</div><div class="result-label">Faster Decisions</div></div>
+        <div><div class="result-val">Unified</div><div class="result-label">Data Architecture</div></div>
+      </div>
+    </div>
+    <div class="case-card">
+      <span class="case-tech">Microsoft Fabric</span>
+      <div class="case-sector">Manufacturing</div>
+      <h3>Streamlining Operations for a Packaging Machinery Manufacturer</h3>
+      <p>A packaging machinery company needed visibility across production efficiency, downtime causes, and supply chain bottlenecks. Microsoft Fabric unified fragmented data sources into a single live operational dashboard for leadership and plant managers.</p>
+      <div class="case-result">
+        <div><div class="result-val">60%</div><div class="result-label">Reporting Time Reduced</div></div>
+        <div><div class="result-val">Live</div><div class="result-label">OEE Tracking</div></div>
+      </div>
+    </div>
+    <div class="case-card">
+      <span class="case-tech">Applied AI</span>
+      <div class="case-sector">Professional Services</div>
+      <h3>Matter Profitability Intelligence for a Mid-Size Law Firm</h3>
+      <p>A mid-size law firm lacked visibility into matter-level profitability and billing efficiency. Addend implemented a Power BI-based analytics platform that gave partners real-time insight into revenue, utilisation, and client performance.</p>
+      <div class="case-result">
+        <div><div class="result-val">Real-Time</div><div class="result-label">Partner Dashboards</div></div>
+        <div><div class="result-val">Improved</div><div class="result-label">Billing Visibility</div></div>
+      </div>
+    </div>
+    <div class="case-card">
+      <span class="case-tech">Data Engineering</span>
+      <div class="case-sector">CPG</div>
+      <h3>Demand Forecasting Platform for a Consumer Goods Organisation</h3>
+      <p>A CPG company was relying on spreadsheet-based forecasting that created misaligned inventory and distribution costs. Addend built a demand forecasting platform on Microsoft Fabric with applied AI, delivering accurate and actionable supply plans.</p>
+      <div class="case-result">
+        <div><div class="result-val">AI-Driven</div><div class="result-label">Forecast Accuracy</div></div>
+        <div><div class="result-val">Reduced</div><div class="result-label">Inventory Cost</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials reveal">
+  <div class="section-header">
+    <div class="section-label">Client Testimonials</div>
+    <h2>The measure of our work<br>is <em>client confidence</em></h2>
+  </div>
+  <div class="testimonial-grid">
+    <div class="testimonial">
+      <span class="t-quote">"</span>
+      <blockquote>The Microsoft Fabric consultants at Addend Analytics completely transformed how we manage and analyse our data. Their expertise helped us identify key insights we were previously missing.</blockquote>
+      <div class="t-author">
+        <div class="t-name">Kevin P.</div>
+        <div class="t-role">Chief Technology Officer, Retail Enterprise</div>
+      </div>
+    </div>
+    <div class="testimonial">
+      <span class="t-quote">"</span>
+      <blockquote>We were amazed by how quickly Addend Analytics implemented Microsoft Fabric. Their team was professional, knowledgeable, and consistently available for support throughout the engagement.</blockquote>
+      <div class="t-author">
+        <div class="t-name">Brie M.</div>
+        <div class="t-role">Head of Data Analytics, Financial Services</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PARTNERS -->
+<div class="partners">
+  <div class="partners-label">Technology &amp; Data Platform Partners</div>
+  <p style="font-size:14px;color:var(--slate-light);margin-bottom:32px;text-align:center;max-width:560px;margin-inline:auto;margin-bottom:36px">Working with leading data and AI platforms to deliver scalable analytics solutions and enterprise-grade data architectures.</p>
+  <div class="partners-row">
+    <span class="partner">Microsoft</span>
+    <span class="partner">Power BI</span>
+    <span class="partner">Microsoft Fabric</span>
+    <span class="partner">Dynamics 365</span>
+    <span class="partner">Azure</span>
+    <span class="partner">Synapse</span>
+  </div>
+</div>
+
+<!-- FINAL CTA — 30-Min Assessment -->
+<section class="final-cta reveal" id="assessment">
+  <div class="final-cta-inner">
+    <div class="final-cta-left">
+      <div class="section-label">The Smartest Way to Start</div>
+      <h2 style="color:var(--white)">Begin with a 30-Minute Analytics Assessment</h2>
+      <p>With Addend, you don't start with a demo or a sales pitch.</p>
+      <p>You start with a focused 30-minute Analytics Assessment designed to understand your context and identify where analytics or AI can create the most immediate value.</p>
+    </div>
+    <div class="final-cta-right">
+      <div class="assessment-title">In this 30-minute session, we:</div>
+      <ul class="assessment-list">
+        <li>Understand your industry context and key business decisions</li>
+        <li>Review your current data and analytics landscape</li>
+        <li>Identify where analytics or AI can deliver value fastest</li>
+        <li>Recommend a clear, low-risk next step — often an accelerator, sometimes a focused PoC</li>
+      </ul>
+      <a href="#contact" class="btn-gold">Book Your Free Assessment</a>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact reveal" id="contact">
+  <div class="contact-inner">
+    <div class="contact-left">
+      <div class="section-label">Get In Touch</div>
+      <h2 style="color:var(--white)">Begin your analytics<br>transformation</h2>
+      <p>Tell us about your organisation and we will propose a structured engagement to turn your data challenges into measurable business outcomes.</p>
+      <div class="contact-offices">
+        <div class="office">
+          <div class="office-city">USA — Alpharetta, Georgia</div>
+          <div class="office-addr">12600 Deerfield Parkway, Suite 100<br>+1 (470) 686-6644</div>
+        </div>
+        <div class="office">
+          <div class="office-city">India — Navi Mumbai</div>
+          <div class="office-addr">1205/1206, Landmark, Plot 26A, Sector 7, Kharghar<br>kamal.sharma@addendanalytics.com</div>
+        </div>
+        <div class="office">
+          <div class="office-city">United Kingdom — London</div>
+          <div class="office-addr">7 Old Gloucester Street, London WC1N 3AX</div>
+        </div>
+      </div>
+    </div>
+    <div class="contact-right">
+      <div class="form-row">
+        <label class="form-label">Full Name</label>
+        <input type="text" class="form-input" placeholder="Your full name">
+      </div>
+      <div class="form-row">
+        <label class="form-label">Organisation</label>
+        <input type="text" class="form-input" placeholder="Company name">
+      </div>
+      <div class="form-row">
+        <label class="form-label">Email Address</label>
+        <input type="email" class="form-input" placeholder="your@email.com">
+      </div>
+      <div class="form-row">
+        <label class="form-label">How Can We Help?</label>
+        <textarea class="form-input" placeholder="Briefly describe your data challenge or project..."></textarea>
+      </div>
+      <button class="btn-gold">Submit Enquiry</button>
+    </div>
+  </div>
+</section>
+
+<!-- ADDEND TAGLINE BANNER -->
+<div class="addend-tag">
+  <h2>Data Analytics &amp; Applied AI Consulting</h2>
+  <p>Helping organisations operationalise data and AI so insights drive real business decisions.</p>
+  <a href="#contact">Talk To Our Experts →</a>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-row">
+    <div class="footer-logo" style="font-family:var(--font-sans);font-weight:700;color:rgba(255,255,255,0.8)">Addend<span style="color:#FF7A1A"> Analytics</span></div>
+    <ul class="footer-links">
+      <li><a href="#services">Analytics &amp; AI Strategy</a></li>
+      <li><a href="#services">Data Engineering</a></li>
+      <li><a href="#services">Applied AI</a></li>
+      <li><a href="#industries">Industries</a></li>
+      <li><a href="#casestudies">Case Studies</a></li>
+      <li><a href="#">Privacy Policy</a></li>
+    </ul>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-copy">© 2025 Addend Analytics. All rights reserved.</span>
+    <span class="iso">ISO 9001 · CERT NO. 20709-QMS-001</span>
+  </div>
+</footer>
+
+<script>
+// ---- SCROLL REVEAL ----
+const observer = new IntersectionObserver(e => e.forEach(el => {
+  if(el.isIntersecting) el.target.classList.add('visible')
+}),{threshold:.08});
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// ---- EXPERTISE TABS ----
+document.querySelectorAll('.exp-item').forEach(item => {
+  item.addEventListener('click', () => {
+    document.querySelectorAll('.exp-item').forEach(i => i.classList.remove('active'));
+    document.querySelectorAll('.exp-panel').forEach(p => p.classList.remove('active'));
+    item.classList.add('active');
+    const panel = document.getElementById('panel-' + item.dataset.panel);
+    if(panel) panel.classList.add('active');
+  });
+});
+
+// ---- HERO CAROUSEL ----
+const slides = document.querySelectorAll('.slide');
+const dots = document.querySelectorAll('.dot');
+let current = 0;
+let autoTimer;
+
+function goTo(idx) {
+  slides[current].classList.remove('active');
+  dots[current].classList.remove('active');
+  dots[current].setAttribute('aria-selected','false');
+  current = (idx + slides.length) % slides.length;
+  slides[current].classList.add('active');
+  dots[current].classList.add('active');
+  dots[current].setAttribute('aria-selected','true');
+}
+
+function startAuto() {
+  clearInterval(autoTimer);
+  autoTimer = setInterval(() => goTo(current + 1), 6000);
+}
+
+dots.forEach(dot => {
+  dot.addEventListener('click', () => {
+    goTo(parseInt(dot.dataset.index));
+    startAuto();
+  });
+});
+
+document.getElementById('next-slide').addEventListener('click', () => {
+  goTo(current + 1);
+  startAuto();
+});
+document.getElementById('prev-slide').addEventListener('click', () => {
+  goTo(current - 1);
+  startAuto();
+});
+
+startAuto();
+</script>
+</body>
+</html>
